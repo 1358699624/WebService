@@ -28,16 +28,17 @@ namespace WebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebService", Version = "v1" });
-                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-            });
             //注入Ef数据库上下文对象服务
             services.AddDbContext<UserInfoServer>(options =>
       options.UseSqlServer(Configuration.GetConnectionString("MySqlConnection")));
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebService", Version = "v1" });
+         
+            });
+  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

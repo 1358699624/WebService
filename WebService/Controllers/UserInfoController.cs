@@ -19,47 +19,54 @@ namespace WebService.Controllers
 
         }
         // GET: api/<UserInfoController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
         private readonly UserInfoServer _userInfoContext;
-            
+
+        [HttpGet("{GetTable}")]
         public List<UserInfo> GetUserInfo(int page = 1, int limit = 5, string userName = "")
         {
             var totalCount = 0;
             List<UserInfo> listData = null;
             if (!string.IsNullOrWhiteSpace(userName))
             {
-                listData = _userInfoContext.UserInfos.Where(x => x.UserName.Contains(userName)).OrderByDescending(m => m.Id).ToList();//.OrderByDescending(m => m.Id).ToList();//.Skip((page - 1) * limit).Take(limit).ToList();
+                listData = _userInfoContext.UserInfos.Where(x => x.UserName.Contains(userName)).Skip((page - 1) * limit).Take(limit).OrderByDescending(m => m.Id).ToList();//.OrderByDescending(m => m.Id).ToList();//
                 totalCount = _userInfoContext.UserInfos.Count(x => x.UserName.Contains(userName));
+            }
+            else
+            {
+                listData = _userInfoContext.UserInfos.Skip((page - 1) * limit).Take(limit).OrderByDescending(m => m.Id).ToList();//.OrderByDescending(m => m.Id).ToList();//
             }
             return listData;
         }
-        // GET api/<UserInfoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<UserInfoController>
+        //新增数据 insert
         [HttpPost]
-        public void Post([FromBody] string value)
+        public bool Post([FromBody]UserInfo userInfos)
         {
+            _userInfoContext.UserInfos.Add(userInfos);
+            return _userInfoContext.SaveChanges() > 0 ? true : false;
         }
-
+        //update
         // PUT api/<UserInfoController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public bool Put([FromBody] UserInfo userInfos)
         {
-        }
 
+            _userInfoContext.UserInfos.Update(userInfos);
+            return _userInfoContext.SaveChanges() > 0 ? true : false;
+        }
+        //delete
         // DELETE api/<UserInfoController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public bool Delete(int id, [FromBody] UserInfo userInfos)
         {
+            _userInfoContext.UserInfos.Remove(userInfos);
+            return _userInfoContext.SaveChanges() > 0 ? true : false;
         }
     }
 }
