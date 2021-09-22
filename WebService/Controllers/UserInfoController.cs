@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,26 @@ namespace WebService.Controllers
         {
             _userInfoContext.UserInfos.Remove(userInfos);
             return _userInfoContext.SaveChanges() > 0 ? true : false;
+        }
+        [HttpGet]
+        public List<UserInfo> GetUP_Userinfo()
+        {
+            // _userInfoContext.UserInfos.Remove(userInfos);
+            //return _userInfoContext.SaveChanges() > 0 ? true : false;
+
+            return _userInfoContext.UserInfos
+    .FromSqlRaw("SELECT * FROM   View_Userinfo")
+    .ToList();
+
+        }
+        [HttpPost("{id}")]
+        public List<UserInfo> GetUP_Userinfo(string username)
+        {
+            //_userInfoContext.UserInfos.Remove(userInfos);
+            //return _userInfoContext.SaveChanges() > 0 ? true : false;
+            return _userInfoContext.UserInfos
+    .FromSqlRaw("SELECT * FROM up_GetUserinfo {0}", username)
+    .ToList();
         }
     }
 }
