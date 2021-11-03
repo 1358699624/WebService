@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebService.DALServer;
+using SwaggerAPI.DALServer;
+using Newtonsoft.Json;
 
-namespace WebService.Controllers
+namespace SwaggerAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -16,7 +18,12 @@ namespace WebService.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
+        public WeatherForecastController(UserInfoServer schoolUserInfoContext)
+        {
+            _userInfoContext = schoolUserInfoContext;
 
+        }
+        private readonly UserInfoServer _userInfoContext;
         private readonly ILogger<WeatherForecastController> _logger;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -37,6 +44,26 @@ namespace WebService.Controllers
             })
             .ToArray();
         }
+        /*
+        /// <summary>
+        /// Json查询
+        /// </summary>
+        /// <param name="searchTerm"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult Get_Linq_Userinfo(JsonResult searchTerm)
+        {
 
+
+            var searchTerm1 = $"where UserName ='{searchTerm}'";
+
+
+            var linqs = _userInfoContext.UserInfos.FromSqlInterpolated($"SELECT * FROM dbo.UserInfo ({searchTerm1})").Where(b => b.Id < 1000)
+    .OrderByDescending(b => b.Id)
+    .ToList();
+
+            return Json {linqs };
+
+        }*/
     }
 }

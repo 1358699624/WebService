@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebService.DALServer
+namespace SwaggerAPI.DALServer
 {
     public class UserInfoServer : DbContext
     {

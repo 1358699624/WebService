@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebService.DALServer;
+using SwaggerAPI.DALServer;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebService.Controllers
+namespace SwaggerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,14 +21,15 @@ namespace WebService.Controllers
             _userInfoContext = schoolUserInfoContext;
 
         }
-        // GET: api/<UserInfoController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
         private readonly UserInfoServer _userInfoContext;
 
+        /// <summary>
+        /// tdk
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [HttpGet("{GetTable}")]
         public List<UserInfo> GetUserInfo(int page = 1, int limit = 5, string userName = "")
         {
@@ -44,15 +47,24 @@ namespace WebService.Controllers
             return listData;
         }
 
-        // POST api/<UserInfoController>
+        /// <summary>
+        /// 自带的保存
+        /// </summary>
+        /// <param name="userInfos"></param>
+        /// <returns></returns>
         //新增数据 insert
         [HttpPost]
-        public bool Post([FromBody]UserInfo userInfos)
+        public bool Post([FromBody] UserInfo userInfos)
         {
             _userInfoContext.UserInfos.Add(userInfos);
             return _userInfoContext.SaveChanges() > 0 ? true : false;
         }
-        //update
+
+        /// <summary>
+        /// 自带的保存
+        /// </summary>
+        /// <param name="userInfos"></param>
+        /// <returns></returns>
         // PUT api/<UserInfoController>/5
         [HttpPut("{id}")]
         public bool Put([FromBody] UserInfo userInfos)
@@ -61,7 +73,12 @@ namespace WebService.Controllers
             _userInfoContext.UserInfos.Update(userInfos);
             return _userInfoContext.SaveChanges() > 0 ? true : false;
         }
-        //delete
+        /// <summary>
+        /// 自带的删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userInfos"></param>
+        /// <returns></returns>
         // DELETE api/<UserInfoController>/5
         [HttpDelete("{id}")]
         public bool Delete(int id, [FromBody] UserInfo userInfos)
@@ -69,21 +86,6 @@ namespace WebService.Controllers
             _userInfoContext.UserInfos.Remove(userInfos);
             return _userInfoContext.SaveChanges() > 0 ? true : false;
         }
-
-        [HttpGet("{GetTable}")]
-        public List<UserInfo> Get_View_Userinfo() 
-        {
-            return _userInfoContext.UserInfos
-       .FromSqlRaw("SELECT * FROM  View_UserInfo ")
-       .ToList();
-        }
-
-        [HttpGet("{username}")]
-        public List<UserInfo> Get_UP_Userinfo(string  username)
-        {
-            return _userInfoContext.UserInfos
-       .FromSqlRaw("EXECUTE  UP_UserInfo {0}", username)
-       .ToList();
-        }
+        
     }
 }

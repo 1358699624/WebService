@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebService
-{
+namespace SwaggerAPI
+{/// <summary>
+/// 用户表
+/// </summary>
     public class UserInfo
     {
         /// <summary>

@@ -5,6 +5,10 @@
     <UserSecretsId>fbe68df2-dfb0-4520-b8cf-3eed777c0c7a</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>E:\VS2022\WebServer\SwaggerAPI\SwaggerAPI\SwaggerAPI.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="IUserinfo.cs" />
   </ItemGroup>

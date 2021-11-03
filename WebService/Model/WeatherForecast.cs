@@ -1,6 +1,6 @@
 using System;
 
-namespace WebService
+namespace SwaggerAPI
 {
     public class WeatherForecast
     {

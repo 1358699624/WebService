@@ -12,9 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebService.DALServer;
+using SwaggerAPI.DALServer;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
-namespace WebService
+namespace SwaggerAPI
 {
     public class Startup
     {
@@ -35,10 +37,22 @@ namespace WebService
             services.AddSwaggerGen(c =>
             {
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SwaggerAPI", Version = "v1" });
          
             });
-  
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            });
+            /*
+            string bJsonString = System.Text.Json.JsonSerializer.Serialize(
+            value: jsonObject,
+            options: new System.Text.Json.JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +62,7 @@ namespace WebService
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebService v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SwaggerAPI v1"));
             }
 
             app.UseHttpsRedirection();
